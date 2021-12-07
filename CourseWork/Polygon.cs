@@ -78,12 +78,6 @@ namespace CourseWork
             return result;
         }
 
-        // метод Добавление вершины
-        public void Add(Point NewVertex)
-        {
-            points.Add(NewVertex);
-        }
-
         public List<PointF> getPoints()
         {
             return points;
@@ -135,7 +129,13 @@ namespace CourseWork
                     }
                     Xb.Sort();
                     for (int i = 0; i < Xb.Count; i += 2)
-                        g.DrawLine(pen, Xb[i], Y, Xb[i + 1], Y);
+                        if(Xb[i] == Xb[i + 1])
+                            g.DrawRectangle(pen, Xb[i], Y, 1, 1);
+                        else
+                        {
+                            g.DrawLine(pen, Xb[i], Y, Xb[i + 1], Y);
+                        }
+                    
                 }
             }
             pen.Color = cache;
@@ -160,37 +160,37 @@ namespace CourseWork
         }
 
         // выделение многоугольника
-        public bool isInside(int mX, int mY)
+        public bool isInside(int x, int y)
         {
             List<PointF> points = getModificatedList();
-
-            int n = points.Count() - 1, k = 0, m = 0;
+            if (points.Count == 2)
+                return nearlyEqual(getX(y, points[0].X, points[0].Y, points[1].X, points[1].Y), x, 2);
+            int n = points.Count() - 1, k, m = 0;
             PointF Pi, Pk;
-            bool check = false;
             for (int i = 0; i < points.Count(); i++)
             {
                 if (i < n) k = i + 1; else k = 0;
                 Pi = points[i]; Pk = points[k];
-                if ((Pi.Y < mY) & (Pk.Y >= mY) | (Pi.Y >= mY) & (Pk.Y < mY))
-                    if ((mY - Pi.Y) * (Pk.X - Pi.X) / (Pk.Y - Pi.Y) + Pi.X < mX) m++;
+                if ((Pi.Y < y) & (Pk.Y >= y) | (Pi.Y >= y) & (Pk.Y < y)) {
+                    float mx = getX(y, Pi.X, Pi.Y, Pk.X, Pk.Y);
+                    if (mx < x) m++;
+                }
+                
             }
-            if (m % 2 == 1) check = true;
-            return check;
+            return m % 2 == 1;   
+        }
+
+        public bool nearlyEqual(float a, float b, float epsilon)
+        {
+            return Math.Abs(a - b) < epsilon;     
         }
 
         // плоско-параллельное перемещение
-        //Здесь должны быть реализованы все методы геометрических преобразований
-        //в матричной форме !
         public void move(float dx, float dy)
         {
             addOperation(new float[,] { { 1, 0, 0},
                                          { 0, 1, 0},
                                          { dx, dy, 1} });
-        }
-
-        public void Clear()
-        {
-            points.Clear();
         }
 
         public void rotate(float angle)
@@ -247,12 +247,6 @@ namespace CourseWork
 
             move(origin.X, origin.Y);
         }
-
-        public int pointsCount()
-        {
-            return points.Count();
-        }
-
 
     }
 }

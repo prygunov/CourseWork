@@ -48,6 +48,7 @@ namespace CourseWork
             g = Graphics.FromImage(myBitmap);
             pictureBox1.MouseWheel += new MouseEventHandler(update);
             pictureBox1.MouseMove += new MouseEventHandler(update);
+            pictureBox1.Image = myBitmap;
         }
 
         // заполнение списка вершин
@@ -56,7 +57,7 @@ namespace CourseWork
             Point NewP = new Point() { X = e.X, Y = e.Y };
             inputPoints.Add(NewP);
             renderInput();
-            if (e.Button == MouseButtons.Right) // Конец ввода
+            if (e.Button == MouseButtons.Right && inputPoints.Count > 1) // Конец ввода
             {
                 polygons.Add(new Polygon(inputPoints, getColor(comboBox5.SelectedIndex)));
                 render();
@@ -68,9 +69,14 @@ namespace CourseWork
             int i = 0;
             foreach (Polygon polygon in polygons)
             {
-                if (polygon.isInside(x, y)) return i;
+                if (polygon.isInside(x, y))
+                {
+                    label2.Text = "Выбранная фигура: " + i;
+                    return i;
+                }
                 i++;
             }
+            label2.Text = "Выбранная фигура: отсутствует";
             return -1;
         }
 
@@ -187,7 +193,54 @@ namespace CourseWork
         //добавление примитива
         private void button3_Click(object sender, EventArgs e)
         {
+            List<PointF> points = new List<PointF>();
+            switch (comboBox1.SelectedIndex) {
+                case 0:
+                    
+                    points.Add(new PointF(300, 300));
+                    points.Add(new PointF(400, 400));
 
+                    polygons.Add(new Polygon(points, getColor(comboBox5.SelectedIndex)));
+                    break;
+                case 2:
+                    points.Add(new PointF(300, 300));
+                    points.Add(new PointF(400, 300));
+                    points.Add(new PointF(400, 250));
+                    points.Add(new PointF(375, 250));
+                    points.Add(new PointF(350, 200));
+                    points.Add(new PointF(325, 250));
+                    points.Add(new PointF(300, 250));
+                    polygons.Add(new Polygon(points, getColor(comboBox5.SelectedIndex)));
+                    break;
+                case 3:
+                    decimal n = numericUpDown1.Value;
+                    PointF center = new PointF(300, 300);
+                    int radius = 20;
+
+                    float step = 360f / (float)(n * 2);
+
+                    for (int i = 0; i < n; i++) {
+                        float degree = 2 * i * step * 0.0174533f;
+                        float x = radius * (float) Math.Cos(degree);
+                        float y = radius * (float) Math.Sin(degree);
+                        points.Add(center + new SizeF(x, y));
+                        degree = (2 *i+1) * step * 0.0174533f;
+                        x = 0.5f * radius * (float)Math.Cos(degree);
+                        y = 0.5f * radius * (float)Math.Sin(degree);
+                        points.Add(center + new SizeF(x, y));
+                    }
+
+                    polygons.Add(new Polygon(points, getColor(comboBox5.SelectedIndex)));
+                    break;
+            }
+            render();
+        }
+
+        private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            if (comboBox1.SelectedIndex == 3)
+                numericUpDown1.Enabled = true;
+            else numericUpDown1.Enabled = false;
         }
     }
 }
