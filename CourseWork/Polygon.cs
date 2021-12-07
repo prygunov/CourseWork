@@ -13,10 +13,18 @@ namespace CourseWork
     {
 
         List<PointF> points = new List<PointF>();
+        Color color;
         float[,] modificationMatrix;
-        public Polygon()
+        public Polygon(Color color)
         {
             points = new List<PointF>();
+            reset();
+        }
+
+        public Polygon(List<PointF> points, Color color)
+        {
+            this.points = points.ToList();
+            this.color = color;
             reset();
         }
 
@@ -85,11 +93,12 @@ namespace CourseWork
         // Вместо него здесь должен быть свой метод закрашивания из л.р. № 2 !
         public void Fill(Graphics g, Pen pen)
         {
-            //Brush DrawBrush = new SolidBrush(DrawPen.Color);
+            Color cache = pen.Color;
+            pen.Color = color;
 
-            //g.FillPolygon(DrawBrush, VertexList.ToArray());
-            if (points.Count > 2)
+            if (points.Count > 1)
             {
+                
                 List<PointF> points = getModificatedList();
 
                 int yMin = (int)points[0].Y;
@@ -129,6 +138,13 @@ namespace CourseWork
                         g.DrawLine(pen, Xb[i], Y, Xb[i + 1], Y);
                 }
             }
+            pen.Color = cache;
+        }
+
+        public void Fill(Graphics g, Pen pen, string text)
+        {
+            Fill(g, pen);
+            drawNumber(g, text);
         }
 
         private float getX(float Y, float x1, float y1, float x2, float y2)
@@ -136,6 +152,12 @@ namespace CourseWork
             return ((Y - y1) * (x2 - x1) / (y2 - y1)) + x1;
         }
 
+        void drawNumber(Graphics g, string text) {
+            PointF origin = centralPoint();
+            Font drawFont = new Font("Arial", 16);
+            SolidBrush drawBrush = new SolidBrush(Color.Chocolate);
+            g.DrawString(text, drawFont, drawBrush, origin);
+        }
 
         // выделение многоугольника
         public bool isInside(int mX, int mY)

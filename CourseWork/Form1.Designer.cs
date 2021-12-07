@@ -148,6 +148,9 @@ namespace CourseWork
             // comboBox4
             // 
             this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.Items.AddRange(new object[] {
+            "Симметрическая разность",
+            "Пересечение"});
             this.comboBox4.Location = new System.Drawing.Point(7, 129);
             this.comboBox4.Name = "comboBox4";
             this.comboBox4.Size = new System.Drawing.Size(157, 23);
@@ -224,10 +227,17 @@ namespace CourseWork
             // comboBox5
             // 
             this.comboBox5.FormattingEnabled = true;
+            this.comboBox5.Items.AddRange(new object[] {
+            "Черный",
+            "Красный",
+            "Зеленый",
+            "Синий"});
             this.comboBox5.Location = new System.Drawing.Point(7, 115);
             this.comboBox5.Name = "comboBox5";
             this.comboBox5.Size = new System.Drawing.Size(157, 23);
             this.comboBox5.TabIndex = 5;
+            this.comboBox5.Text = "Черный";
+            this.comboBox5.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // label7
             // 
@@ -246,13 +256,30 @@ namespace CourseWork
             this.button3.TabIndex = 3;
             this.button3.Text = "Добавить";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // numericUpDown1
             // 
+            this.numericUpDown1.Enabled = false;
             this.numericUpDown1.Location = new System.Drawing.Point(43, 67);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(48, 23);
             this.numericUpDown1.TabIndex = 2;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
             // 
             // label4
             // 
@@ -276,6 +303,7 @@ namespace CourseWork
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(159, 23);
             this.comboBox1.TabIndex = 0;
+            this.comboBox1.Text = "Прямая";
             // 
             // checkBox1
             // 

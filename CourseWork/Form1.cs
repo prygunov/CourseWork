@@ -17,7 +17,7 @@ namespace CourseWork
         Pen pen = new Pen(Color.Black, 1);
         List<Polygon> polygons = new List<Polygon>();
         int selectedIndex = -1;
-        Polygon selectedPolygon = new Polygon();
+        List<PointF> inputPoints = new List<PointF>();
 
         Point lastMousePos = new Point();
 
@@ -54,18 +54,13 @@ namespace CourseWork
         private void InputPgn(MouseEventArgs e)
         {
             Point NewP = new Point() { X = e.X, Y = e.Y };
-            selectedPolygon.Add(NewP);
-            int k = selectedPolygon.pointsCount();
-            if (k > 1) 
-                g.DrawLine(pen, selectedPolygon.getPoints()[k - 2], selectedPolygon.getPoints()[k - 1]);
-            else 
-                g.DrawRectangle(pen, e.X, e.Y, 1, 1);
-
+            inputPoints.Add(NewP);
+            renderInput();
             if (e.Button == MouseButtons.Right) // Конец ввода
             {
-                polygons.Add(selectedPolygon);
+                polygons.Add(new Polygon(inputPoints, getColor(comboBox5.SelectedIndex)));
                 render();
-                selectedPolygon = new Polygon();
+                inputPoints.Clear();
             }
         }
 
@@ -84,12 +79,9 @@ namespace CourseWork
         {
             lastMousePos = e.Location;
             int index = getSelectedIndex(e.X, e.Y);
-            if (checkBox2.Checked)
-            {
+            if (checkBox2.Checked){
                 InputPgn(e);
-            }
-            else if (index != -1)
-            {
+            } else if (index != -1){
                 selectedIndex = index;
                 g.DrawEllipse(new Pen(Color.Blue), e.X - 2, e.Y - 2, 5, 5);
             }
@@ -102,20 +94,20 @@ namespace CourseWork
         // Обработчик события выбора цвета в элементе ComboBox cbLineColor
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            switch (comboBox1.SelectedIndex)  // выбор цвета  
+            pen.Color = getColor(comboBox5.SelectedIndex);
+        }
+
+        Color getColor(int index) {
+            switch (index)  // выбор цвета  
             {
-                case 0:
-                    pen.Color = Color.Black;
-                    break;
                 case 1:
-                    pen.Color = Color.Red;
-                    break;
+                    return Color.Red;
                 case 2:
-                    pen.Color = Color.Green;
-                    break;
+                    return Color.Green;
                 case 3:
-                    pen.Color = Color.Blue;
-                    break;
+                    return Color.Blue;
+                default:
+                    return Color.Black;
             }
         }
 
@@ -134,26 +126,42 @@ namespace CourseWork
             {
                 myBitmap = new Bitmap(pictureBox1.Width, pictureBox1.Height);
                 g = Graphics.FromImage(myBitmap);
-                selectedPolygon.Clear();
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                if (selectedPolygon.pointsCount() > 0)
-                {
-                    selectedPolygon.Fill(g, pen);
-                    pictureBox1.Image = myBitmap;
-                }
+                render();
             }
         }
 
         void render() {
             g.Clear(pictureBox1.BackColor);
+            renderInput();
 
-            foreach (Polygon polygon in polygons)
-            {
-                polygon.Fill(g, pen);
-            }
-
+            int i = 0;
+            if(!checkBox1.Checked)
+                foreach (Polygon polygon in polygons)
+                {
+                    polygon.Fill(g, pen);
+                }
+            else
+                foreach (Polygon polygon in polygons)
+                {
+                    polygon.Fill(g, pen, ""+i);
+                    i++;
+                }
             pictureBox1.Refresh();
 
+        }
+        void renderInput()
+        {
+            int i = 0;
+            if (inputPoints.Count == 1)
+                g.DrawRectangle(pen, inputPoints[0].X, inputPoints[0].Y, 1, 1);
+
+            foreach (PointF point in inputPoints)
+            {
+                if (i > 0)
+                    g.DrawLine(pen, inputPoints[i], inputPoints[i - 1]);
+                i++;
+            }
         }
 
         // сброс преобразований
@@ -164,19 +172,22 @@ namespace CourseWork
                 polygon.reset();
                 render();
             }
-
-            pictureBox1.Refresh();
         }
         // удаление
         private void button4_Click(object sender, EventArgs e)
         {
             if (selectedIndex != -1)
             {
-                selectedIndex = -1;
                 polygons.RemoveAt(selectedIndex);
+                selectedIndex = -1;
                 render();
             }
             pictureBox1.Refresh();
+        }
+        //добавление примитива
+        private void button3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
