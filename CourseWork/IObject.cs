@@ -28,9 +28,9 @@ namespace CourseWork
         }
 
         public void reset();
-        public void Fill(Graphics g, Pen pen);
-        public void Fill(Graphics g, Pen pen, string v) {
-            Fill(g, pen);
+        public void draw(Graphics g, Pen pen);
+        public void draw(Graphics g, Pen pen, string v) {
+            draw(g, pen);
             drawNumber(g, v);
         }
         public bool isInside(int x, int y);

@@ -18,7 +18,7 @@ namespace CourseWork
             typeOperation = type;
         }
 
-        public void Fill(Graphics g, Pen pen)
+        public void draw(Graphics g, Pen pen)
         {
             int minY = first.getMinY();
             if (minY > second.getMinY())

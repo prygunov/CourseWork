@@ -185,12 +185,12 @@ namespace CourseWork
             if(!checkBox1.Checked)
                 foreach (IObject polygon in objects)
                 {
-                    polygon.Fill(g, pen);
+                    polygon.draw(g, pen);
                 }
             else
                 foreach (IObject polygon in objects)
                 {
-                    polygon.Fill(g, pen, ""+i);
+                    polygon.draw(g, pen, ""+i);
                     i++;
                 }
             pictureBox1.Refresh();

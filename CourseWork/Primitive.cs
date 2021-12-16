@@ -91,7 +91,7 @@ namespace CourseWork
             return points;
         }
 
-        public void Fill(Graphics g, Pen pen)
+        public void draw(Graphics g, Pen pen)
         {
             Color cache = pen.Color;
             pen.Color = color;
@@ -115,7 +115,7 @@ namespace CourseWork
                         }
                     }
                     yMin = Math.Max(yMin, 0);
-                    yMax = Math.Min(yMax, 1000);
+                    yMax = Math.Min(yMax, 1080);
 
                     for (int Y = yMin; Y < yMax; Y++)
                     {
@@ -241,19 +241,13 @@ namespace CourseWork
             List<PointF> points = getModificatedList();
             if (points.Count == 2)
                 return nearlyEqual(getX(y, points[0].X, points[0].Y, points[1].X, points[1].Y), x, 5);
-            int n = points.Count() - 1, k, m = 0;
-            PointF Pi, Pk;
-            for (int i = 0; i < points.Count(); i++)
-            {
-                if (i < n) k = i + 1; else k = 0;
-                Pi = points[i]; Pk = points[k];
-                if ((Pi.Y < y) & (Pk.Y >= y) | (Pi.Y >= y) & (Pk.Y < y)) {
-                    float mx = getX(y, Pi.X, Pi.Y, Pk.X, Pk.Y);
-                    if (mx < x) m++;
-                }
-                
+            Borders borders = getBorders(y);
+
+            for (int i = 0; i < borders.getLeft().Count; i++) {
+                if (borders.getLeft()[i] <= x && borders.getRight()[i] >= x)
+                    return true;
             }
-            return m % 2 == 1;   
+            return false; 
         }
 
         public bool nearlyEqual(float a, float b, float epsilon)
@@ -385,9 +379,7 @@ namespace CourseWork
                         else
                             Xr.Add(x);
                     }
-
                 }
-
             }
 
             Xl.Sort();
