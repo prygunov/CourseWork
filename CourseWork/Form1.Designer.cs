@@ -208,7 +208,7 @@ namespace CourseWork
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(12, 767);
+            this.button5.Location = new System.Drawing.Point(14, 674);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(171, 23);
             this.button5.TabIndex = 7;
@@ -218,7 +218,7 @@ namespace CourseWork
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(13, 676);
+            this.button4.Location = new System.Drawing.Point(13, 645);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(171, 23);
             this.button4.TabIndex = 5;
@@ -427,7 +427,7 @@ namespace CourseWork
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 658);
+            this.label2.Location = new System.Drawing.Point(12, 627);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(183, 15);
             this.label2.TabIndex = 1;

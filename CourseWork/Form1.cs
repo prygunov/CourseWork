@@ -353,14 +353,14 @@ namespace CourseWork
         private void updateBoxes()
         {
             comboBox2.Items.Clear();
-            comboBox2.Text = "Не выбрана";
+            comboBox2.Text = "Не выбран";
             for (int i = 0; i < objects.Count; i++)
             {
                 comboBox2.Items.Add(i);
             }
             
             comboBox3.Items.Clear();
-            comboBox3.Text = "Не выбрана";
+            comboBox3.Text = "Не выбран";
             for (int i = 0; i < objects.Count; i++)
             {
                 comboBox3.Items.Add(i);
