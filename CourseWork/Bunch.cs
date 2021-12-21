@@ -51,7 +51,7 @@ namespace CourseWork
             List<float> Xbl = second.getBorders(Y).getLeft();
             List<float> Xbr = second.getBorders(Y).getRight();
 
-
+            // заполнение рабочего списка строки
             List<float[]> M = new List<float[]>();
             for (int i = 0; i < Xal.Count; i++)
                 M.Add(new float[] { Xal[i], 2 });
@@ -64,41 +64,38 @@ namespace CourseWork
 
             for (int i = 0; i < Xbr.Count; i++)
                 M.Add(new float[] { Xbr[i], -1 });
-            // заполнение рабочего массива
-
+            
 
             sortM(M);
 
-            float Q = 0;
-
-            int[] setQ;
-
             // весы для расчета Q
+            int[] setQ;
             switch (typeOperation)
             {
-                case 1: setQ = new int[] { 1, 2 }; break; // пересечение           
+                case 1: setQ = new int[] { 1, 2 }; break; // симметрическая разность        
                 default:
-                   setQ = new int[] { 3, 3 }; break; // симметрическая разность
+                   setQ = new int[] { 3, 3 }; break; // пересечение   
             }
 
-            List<float> Xrl = new List<float>();
-            List<float> Xrr = new List<float>();
+            List<float> left = new List<float>();
+            List<float> right = new List<float>();
 
+            float Q = 0;
             for (int i = 0; i < M.Count; i++)
             {
                 float nQ = Q + M[i][1]; // определение суммы и проверка на соответствие весам
                                         // добавление необходимых отрезков
                 if ((Q < setQ[0] || Q > setQ[1]) && nQ >= setQ[0] && nQ <= setQ[1])
                 {
-                    Xrl.Add(M[i][0]);
+                    left.Add(M[i][0]);
                 }
                 if (Q >= setQ[0] && Q <= setQ[1] && (nQ < setQ[0] || nQ > setQ[1]))
                 {
-                    Xrr.Add(M[i][0]);
+                    right.Add(M[i][0]);
                 }
                 Q = nQ;
             }
-            return new Borders(Xrl, Xrr);
+            return new Borders(left, right);
         }
 
         private void sortM(List<float[]> M)

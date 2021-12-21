@@ -7,19 +7,21 @@ namespace CourseWork
 {
     interface IObject
     {
-        public int getMinY();
-        public int getMaxY();
-        public Borders getBorders(int y);
+        //строки для обработки
+        public int getMinY(); // нижняя строка
+        public int getMaxY(); // верхняя строка
+        
+        public Borders getBorders(int y); //пары левых и правых границ для строки
 
-        public void move(float dx, float dy);
-
+        // реализация геометрических преобразований
+        public void move(float dx, float dy); 
         public void rotate(float angle, PointF relatePoint);
-
         public void scale(float s, PointF relatePoint, int type);
+        public void reset();
 
-        public PointF getCenter();
+        public PointF getCenter(); // центр объекта
 
-        private void drawNumber(Graphics g, string text)
+        private void drawString(Graphics g, string text) // подпись объекта
         {
             PointF origin = getCenter();
             Font drawFont = new Font("Arial", 16);
@@ -27,12 +29,13 @@ namespace CourseWork
             g.DrawString(text, drawFont, drawBrush, origin);
         }
 
-        public void reset();
-        public void draw(Graphics g, Pen pen);
-        public void draw(Graphics g, Pen pen, string v) {
+        // обычная отрисовка
+        public void draw(Graphics g, Pen pen); 
+        // отрисовка с подписью
+        public void draw(Graphics g, Pen pen, string v) { 
             draw(g, pen);
-            drawNumber(g, v);
+            drawString(g, v);
         }
-        public bool isInside(int x, int y);
+        public bool isInside(int x, int y); // находится ли точка внутри объекта, нужно для захвата
     }
 }

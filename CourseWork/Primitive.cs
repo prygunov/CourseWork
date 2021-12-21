@@ -91,18 +91,8 @@ namespace CourseWork
             if (points.Count > 1)
                 if (mode == 0)
                 {
-                    int yMin = (int)points[0].Y;
-                    int yMax = (int)points[0].Y;
-
-                    for (int i = 0; i < points.Count; i++)
-                    {
-                        if (points[i].Y < yMin)
-                            yMin = (int)points[i].Y;
-                        if (points[i].Y > yMax)
-                            yMax = (int)points[i].Y;
-                    }
-                    yMin = Math.Max(yMin, 0);
-                    yMax = Math.Min(yMax, 1080);
+                    int yMin = Math.Max(getMinY(), 0);
+                    int yMax = Math.Min(getMaxY(), 1080); ;
 
                     for (int Y = yMin; Y < yMax; Y++)
                     {
@@ -165,7 +155,7 @@ namespace CourseWork
             {
                 xt = ((L[0].X * t + L[1].X) * t + L[2].X) * t + L[3].X;
                 yt = ((L[0].Y * t + L[1].Y) * t + L[2].Y) * t + L[3].Y;
-                response.Add(new PointF((float)xt, (float)yt));
+                response.Add(new PointF(xt, yt));
                 t = t + dt;
             }
             return response;
@@ -257,12 +247,12 @@ namespace CourseWork
                                          { dx, dy, 1} });
         }
 
-        public void rotate(float angle, PointF origin)
+        public void rotate(float rad, PointF origin)
         {
             move(-origin.X, -origin.Y);
 
-            float sin = (float)Math.Sin(angle);
-            float cos = (float)Math.Cos(angle);
+            float sin = (float)Math.Sin(rad);
+            float cos = (float)Math.Cos(rad);
 
             addOperation(new float[,] { { cos, sin, 0},
                                         { -sin, cos, 0},
@@ -346,7 +336,7 @@ namespace CourseWork
                     if (!cw)
                     {
                         if (points[k].Y < points[i].Y)
-                            Xr.Add(x);
+                            Xr.Add(x); //движимся вниз
                         else
                             Xl.Add(x);
                     }
@@ -355,7 +345,7 @@ namespace CourseWork
                         if (points[k].Y < points[i].Y)
                             Xl.Add(x);
                         else
-                            Xr.Add(x);
+                            Xr.Add(x); //движимся вверх
                     }
                 }
             }

@@ -270,13 +270,14 @@ namespace CourseWork
                     PointF center = new PointF(300, 300);
                     int radius = 20;
                     float step = 360f / (float)(n * 2);
+                    float radianStep = step * 0.0174533f;
 
                     for (int i = 0; i < n; i++) {
-                        float radian = 2 * i * step * 0.0174533f;
+                        float radian = 2 * i * radianStep;
                         float x = radius * (float) Math.Cos(radian);
                         float y = radius * (float) Math.Sin(radian);
                         points.Add(center + new SizeF(x, y));
-                        radian = (2 *i+1) * step * 0.0174533f;
+                        radian = (2 *i+1) * radianStep;
                         x = 0.5f * radius * (float)Math.Cos(radian);
                         y = 0.5f * radius * (float)Math.Sin(radian);
                         points.Add(center + new SizeF(x, y));
