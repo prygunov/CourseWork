@@ -46,10 +46,13 @@ namespace CourseWork
 
         public Borders getBorders(int Y)
         {
-            List<float> Xal = first.getBorders(Y).getLeft();
-            List<float> Xar = first.getBorders(Y).getRight();
-            List<float> Xbl = second.getBorders(Y).getLeft();
-            List<float> Xbr = second.getBorders(Y).getRight();
+            Borders firstBorders = first.getBorders(Y);
+            Borders secondBorders = second.getBorders(Y);
+
+            List<float> Xal = firstBorders.getLeft();
+            List<float> Xar = firstBorders.getRight();
+            List<float> Xbl = secondBorders.getLeft();
+            List<float> Xbr = secondBorders.getRight();
 
             // заполнение рабочего списка строки
             List<float[]> M = new List<float[]>();

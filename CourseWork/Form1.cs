@@ -183,18 +183,17 @@ namespace CourseWork
             
             int i = 0;
             if(!checkBox1.Checked)
-                foreach (IObject polygon in objects)
+                foreach (IObject obj in objects)
                 {
-                    polygon.draw(g, pen);
+                    obj.draw(g, pen);
                 }
             else
-                foreach (IObject polygon in objects)
+                foreach (IObject obj in objects)
                 {
-                    polygon.draw(g, pen, ""+i);
+                    obj.draw(g, pen, ""+i);
                     i++;
                 }
             pictureBox1.Refresh();
-
         }
         // перерисовка режима рисования
         void renderInput()

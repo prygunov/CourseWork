@@ -99,7 +99,7 @@ namespace CourseWork
                         Borders borders = getBorders(Y);
                         List<float> left = borders.getLeft();
                         List<float> right = borders.getRight();
-                        for (int i = 0; i < left.Count; i ++)
+                        for (int i = 0; i < left.Count; i++)
                             g.DrawLine(pen, left[i], Y, right[i], Y);
                     }
                 }
@@ -114,10 +114,10 @@ namespace CourseWork
                     g.DrawLine(arrowPen, points[2], points[3]);
 
                     List<PointF> p = getSplinePoints(points);
-                    
-                    for(int i = 1; i<p.Count; i++)
+
+                    for (int i = 1; i < p.Count; i++)
                     {
-                        g.DrawLine(pen, p[i-1], p[i]);
+                        g.DrawLine(pen, p[i - 1], p[i]);
                     }
                 }
             pen.Color = cache;
@@ -189,7 +189,7 @@ namespace CourseWork
         {
             List<PointF> points = getModificatedList();
             int maxY = 0;
-            for (int i = 1; i<points.Count; i++)
+            for (int i = 1; i < points.Count; i++)
             {
                 if (points[i].Y > points[maxY].Y)
                     maxY = i;
@@ -202,25 +202,25 @@ namespace CourseWork
         {
             List<PointF> points = getModificatedList();
             if (points.Count == 2)
-                if ((y > points[0].Y && y < points[1].Y) || (y < points[0].Y && y > points[1].Y))
-                    return nearlyEqual(getX(y, points[0].X, points[0].Y, points[1].X, points[1].Y), x, 5);
+                if (isBetween(y, points[0].Y, points[1].Y, 2) || isBetween(y, points[1].Y, points[0].Y, 2))
+                    return distanceToStraight(x, y, points[0], points[1]) < 5;
                 else return false;
             else if (mode == 2)
             {
                 //проверка захвата сплайна
-                if (((y > points[0].Y && y < points[1].Y) || (y < points[0].Y && y > points[1].Y)) ||
-                    ((y > points[2].Y && y < points[3].Y) || (y < points[2].Y && y > points[3].Y)))
-                    if (nearlyEqual(getX(y, points[0].X, points[0].Y, points[1].X, points[1].Y), x, 5) ||
-                       nearlyEqual(getX(y, points[2].X, points[2].Y, points[3].X, points[3].Y), x, 5))
+                if (isBetween(y, points[0].Y, points[1].Y, 2) || isBetween(y, points[1].Y, points[0].Y, 2) ||
+                    isBetween(y, points[2].Y, points[3].Y, 2) || isBetween(y, points[2].Y, points[3].Y, 2))
+                    if(distanceToStraight(x, y, points[0], points[1]) < 5 ||
+                        distanceToStraight(x, y, points[2], points[3]) < 5)
                         return true; // захват двух векторов
-                
+
                 List<PointF> p = getSplinePoints(points);
 
                 for (int i = 1; i < p.Count; i++)
                 {
-                    if (((y > p[i-1].Y && y < p[i].Y) || (y < p[i-1].Y && y > p[i].Y)))
-                       if (nearlyEqual(getX(y, p[i - 1].X, p[i - 1].Y, p[i].X, p[i].Y), x, 5))
-                        return true; // захват кривой
+                    if (((y > p[i - 1].Y && y < p[i].Y) || (y < p[i - 1].Y && y > p[i].Y)))
+                        if (nearlyEqual(getX(y, p[i - 1].X, p[i - 1].Y, p[i].X, p[i].Y), x, 5))
+                            return true; // захват кривой
                 }
                 return false; // захвата нет
             }
@@ -231,7 +231,17 @@ namespace CourseWork
                 if (borders.getLeft()[i] <= x && borders.getRight()[i] >= x)
                     return true;
             }
-            return false; 
+            return false;
+        }
+
+        private bool isBetween(float value, float fborder, float sborder, float e) {
+            return (value > fborder - e) && (value < sborder + e);
+        }
+
+        // расстояние до прямой
+        private double distanceToStraight(int x, int y, PointF first, PointF second) {
+            return Math.Abs((second.Y - first.Y) * x - (second.X - first.X) * y + second.X * first.Y - second.Y * first.X) /
+                (Math.Sqrt(Math.Pow(second.Y - first.X, 2) + Math.Pow(second.X - first.X, 2)));
         }
 
         public static bool nearlyEqual(float a, float b, float epsilon)
